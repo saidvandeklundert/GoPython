@@ -11,7 +11,7 @@ On the Python side, we make use of [ctypes](https://docs.python.org/3/library/ct
 
 ### books
 
-[Learning Go by Jon Bodner](https://www.oreilly.com/library/view/learning-go/9781492077206/)
+[Learning Go by Jon Bodner](https://www.oreilly.com/library/view/learning-go/9781492077206/) \
 [CPython Internals](https://realpython.com/products/cpython-internals-book/)
 
 ### blogs and articles
