@@ -66,6 +66,6 @@ if __name__ == "__main__":
         mem_usage = psutil.Process(os.getpid()).memory_info().rss / 1024 ** 2
         if n % 10000 == 0:
             print(
-                f"memory usage is {round(mem_usage,2)} MB\t Go func took {round(end - start, 5)}\t Go func called {n} times"
+                f"memory usage is {round(mem_usage,2)} MB\t Go func took {round(end - start, 10)} seconds\t Go func called {n} times"
             )
         n = n + 1
