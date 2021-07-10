@@ -1,0 +1,9 @@
+1.1.1.1
+google.nl
+8.8.8.8
+8.8.4.4
+nu.nl
+nos.nl
+9.9.9.9
+ibm.com
+amazon.com

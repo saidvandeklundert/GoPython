@@ -16,10 +16,10 @@ On the Python side, we make use of [ctypes](https://docs.python.org/3/library/ct
 
 ### blogs and articles
 
-https://fluhus.github.io/snopher/
-https://www.ardanlabs.com/blog/2020/06/python-go-grpc.html
-https://www.ardanlabs.com/blog/2020/07/extending-python-with-go.html
-https://www.ardanlabs.com/blog/2020/08/packaging-python-code.html
-https://www.ardanlabs.com/blog/2020/09/using-python-memory.html
-https://blog.golang.org/cgo
-https://pythonextensionpatterns.readthedocs.io/en/latest/
+https://fluhus.github.io/snopher/ \
+https://www.ardanlabs.com/blog/2020/06/python-go-grpc.html \
+https://www.ardanlabs.com/blog/2020/07/extending-python-with-go.html \
+https://www.ardanlabs.com/blog/2020/08/packaging-python-code.html \
+https://www.ardanlabs.com/blog/2020/09/using-python-memory.html \
+https://blog.golang.org/cgo \
+https://pythonextensionpatterns.readthedocs.io/en/latest/ \
