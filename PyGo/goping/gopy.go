@@ -14,6 +14,7 @@ import (
 	"io/ioutil"
 	"log"
 	"sync"
+	"time"
 	"unsafe"
 
 	"github.com/go-ping/ping"
@@ -25,16 +26,17 @@ type PyGo struct {
 	Log     bool     `json:"log,omitempty"`
 }
 
+// Function that sends an ICMP request to target host
 func pinger(host string, wg *sync.WaitGroup) {
 	defer wg.Done()
 	pinger, _ := ping.NewPinger(host)
 	pinger.Count = 2
+	pinger.Timeout = time.Second * 2
 	pinger.SetPrivileged(true)
 	pinger.OnFinish = func(stats *ping.Statistics) {
-		fmt.Printf("\n--- %s ping statistics ---\n", stats.Addr)
-		fmt.Printf("%d packets transmitted, %d packets received, %d duplicates, %v%% packet loss\n",
+		fmt.Printf("%s results: %d packets transmitted, %d packets received, %d duplicates, %v%% packet loss\n", stats.Addr,
 			stats.PacketsSent, stats.PacketsRecv, stats.PacketsRecvDuplicates, stats.PacketLoss)
-		fmt.Printf("round-trip min/avg/max/stddev = %v/%v/%v/%v\n",
+		fmt.Printf("   round-trip min/avg/max/stddev = %v/%v/%v/%v\n\n",
 			stats.MinRtt, stats.AvgRtt, stats.MaxRtt, stats.StdDevRtt)
 	}
 	fmt.Printf("PING %s (%s):\n", pinger.Addr(), pinger.IPAddr())
@@ -46,8 +48,7 @@ func pinger(host string, wg *sync.WaitGroup) {
 
 //export goPing
 func goPing(py2go_info *C.char) C.struct_PyGo {
-
-	// turn JSON into 'args':
+	// unmarshall JSON received from Python':
 	s := C.GoString(py2go_info)
 	Py2GoArgs := new(PyGo)
 	err := json.Unmarshal([]byte(s), &Py2GoArgs)

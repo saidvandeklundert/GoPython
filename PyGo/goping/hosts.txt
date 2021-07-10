@@ -1,5 +1,6 @@
 1.1.1.1
 google.nl
+www.google.com
 8.8.8.8
 8.8.4.4
 nu.nl
@@ -7,3 +8,6 @@ nos.nl
 9.9.9.9
 ibm.com
 amazon.com
+github.com
+2.2.2.2
+twitter.com
