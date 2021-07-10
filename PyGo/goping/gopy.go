@@ -50,8 +50,11 @@ func goPing(py2go_info *C.char) C.struct_PyGo {
 	// turn JSON into 'args':
 	s := C.GoString(py2go_info)
 	Py2GoArgs := new(PyGo)
-	_ = json.Unmarshal([]byte(s), &Py2GoArgs)
+	err := json.Unmarshal([]byte(s), &Py2GoArgs)
+	if err != nil {
+		log.Fatal("Cannot unmarshall JSON received from the Python universe")
 
+	}
 	if Py2GoArgs.Log == false {
 		log.SetOutput(ioutil.Discard)
 	}
