@@ -23,3 +23,4 @@ https://www.ardanlabs.com/blog/2020/08/packaging-python-code.html \
 https://www.ardanlabs.com/blog/2020/09/using-python-memory.html \
 https://blog.golang.org/cgo \
 https://pythonextensionpatterns.readthedocs.io/en/latest/ \
+https://github.com/jima80525/ctypes_example \ 
