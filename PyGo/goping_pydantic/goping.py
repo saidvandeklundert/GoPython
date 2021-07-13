@@ -6,22 +6,32 @@ import json
 from pydantic import BaseModel
 from typing import List
 
-
-class Standard(BaseModel):
-    """Base fields to be passed into the Go runtime"""
-
-    log: bool
-
-
+# Args from Python to Go:
 class Py2GoArgs(BaseModel):
     """Script fields to be passed into the Go runtime"""
 
     hosts: List[str]
-    standard: Standard
+    log: bool
 
-    def JsonOut(self):
+    def JsonOut(self) -> bytes:
         """Output the class as bytes containing a utf8 JSON byte"""
         return json.dumps(self.dict()).encode("utf8")
+
+
+# Args from Go to Python:
+class GoPingRestult(BaseModel):
+    """Describes a Ping result"""
+
+    host: str
+    packets_sent: int
+    packet_los_percent: int
+    duplicated: int
+
+
+class GoPingResults(BaseModel):
+    """Describes the Go Ping results"""
+
+    pingResults: List[GoPingRestult]
 
 
 class PyGo(ctypes.Structure):
@@ -55,11 +65,9 @@ gcPyGo.argtypes = [PyGo]
 with open("hosts.txt") as f:
     host_list = [line.rstrip() for line in f]
 
-goArgs_d = Py2GoArgs(hosts=host_list, standard={"log": True})
+goArgs_d = Py2GoArgs(hosts=host_list, log=True)
 """
-goArgs_d = Py2GoArgs(
-    hosts=["1.1.1.1", "google.nl", "8.8.8.8", "8.8.4.4"], standard={"log": True}
-)
+goArgs_d = Py2GoArgs(hosts=["1.1.1.1", "google.nl", "8.8.8.8", "8.8.4.4"], log=False)
 
 
 def runGoPing(display: bool = True):
@@ -67,6 +75,7 @@ def runGoPing(display: bool = True):
     PyGo_data = goPing(goArgs_d.JsonOut())
     py2go_str = PyGo_data.py2go.decode()
     go2py_response = PyGo_data.GetGoResponse()
+
     if display:
         print(
             f"send py2go\t: {py2go_str}\nreceived go2py\t: {go2py_response}\n\n------------"

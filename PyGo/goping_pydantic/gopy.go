@@ -19,6 +19,7 @@ import (
 	"github.com/go-ping/ping"
 )
 
+// go build -buildmode=c-shared -o gopy.so gopy.go
 type PyGo struct {
 	Message string   `json:"message,omitempty"`
 	Hosts   []string `json:"hosts,omitempty"`
@@ -40,9 +41,11 @@ func goPing(py2go_info *C.char) C.struct_PyGo {
 		log.Fatal("Cannot unmarshall JSON received from the Python universe")
 
 	}
+
 	if Py2GoArgs.Log == false {
 		log.SetOutput(ioutil.Discard)
 	}
+	log.Printf("\nPy2GoArgs:%#v\n", Py2GoArgs)
 	log.Printf("Message from the Go runtime:\n%v\n\n-----------\n", Py2GoArgs)
 	// Prepare JSON that is going to be returned:
 
@@ -63,7 +66,8 @@ func goPing(py2go_info *C.char) C.struct_PyGo {
 			PacketLossPercent: int(stats.PacketLoss),
 			Duplicates:        stats.PacketsRecvDuplicates,
 		}
-		Go2Py.AddPingResult(pingresult)
+
+		Go2Py.PingResults.AddPingResult(pingresult)
 
 	}
 
@@ -114,10 +118,10 @@ func PrintStats(stats ping.Statistics) {
 }
 
 type PingResult struct {
-	Host              string `json:"host,omitempty"`
-	PacketsSent       int    `json:"packets-sent,omitempty"`
-	PacketLossPercent int    `json:"packetloss-percent,omitempty"`
-	Duplicates        int    `json:"duplicates,omitempty"`
+	Host              string `json:"host"`
+	PacketsSent       int    `json:"packets-sent"`
+	PacketLossPercent int    `json:"packetloss-percent"`
+	Duplicates        int    `json:"duplicates"`
 }
 
 type PingResults struct {
