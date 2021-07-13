@@ -4,7 +4,7 @@ import os
 import psutil
 import json
 from pydantic import BaseModel
-from typing import List
+from typing import Any, List, Optional
 
 # Args from Python to Go:
 class Py2GoArgs(BaseModel):
@@ -52,13 +52,32 @@ class PyGo(ctypes.Structure):
         gcPyGo(self)
 
 
-# import the Go library:
-lib = ctypes.CDLL("./gopy.so")
-goPing = lib.goPing
-goPing.argtypes = [ctypes.c_char_p]
-goPing.restype = PyGo
-gcPyGo = lib.gcPyGo
-gcPyGo.argtypes = [PyGo]
+def ReturnFunction(
+    lib: ctypes.CDLL,
+    function_name: str,
+    response_type: Any,
+    argument_type: Optional[Any] = None,
+):
+    """Provide easy access to Ctypes functions"""
+    func = lib.__getattr__(function_name)
+    func.restype = response_type
+    if argument_type:
+        func.argtypes = argument_type
+    return func
+
+
+goPing = ReturnFunction(
+    lib=ctypes.CDLL("./gopy.so"),
+    function_name="goPing",
+    response_type=PyGo,
+    argument_type=[ctypes.c_char_p],
+)
+gcPyGo = ReturnFunction(
+    lib=ctypes.CDLL("./gopy.so"),
+    function_name="gcPyGo",
+    response_type=PyGo,
+)
+
 
 """
 # to spice it up
@@ -91,7 +110,7 @@ if __name__ == "__main__":
     print(
         f"memory usage: {round(mem_usage,2)} MB\t Go func took {round(end - start, 10)} seconds"
     )
-
+    # running it a long time to see if there are memory leaks
     n = 0
     while True:
         start = time.time()
