@@ -79,19 +79,22 @@ gcPyGo = ReturnFunction(
 )
 
 
-"""
 # to spice it up
 with open("hosts.txt") as f:
     host_list = [line.rstrip() for line in f]
 
-goArgs_d = Py2GoArgs(hosts=host_list, log=True)
+py2goargs = Py2GoArgs(hosts=host_list, log=True)
 """
-goArgs_d = Py2GoArgs(hosts=["1.1.1.1", "google.nl", "8.8.8.8", "8.8.4.4"], log=False)
+py2goargs = Py2GoArgs(hosts=["1.1.1.1", "google.nl", "8.8.8.8", "8.8.4.4"], log=False)
+"""
 
 
-def runGoPing(display: bool = True):
+def runGoPing(
+    py2goargs: Py2GoArgs,
+    display: bool = True,
+):
     """Call runGoPing"""
-    PyGo_data = goPing(goArgs_d.JsonOut())
+    PyGo_data = goPing(py2goargs.JsonOut())
     py2go_str = PyGo_data.py2go.decode()
     go2py_response = PyGo_data.GetGoResponse()
 
@@ -103,7 +106,7 @@ def runGoPing(display: bool = True):
 
 if __name__ == "__main__":
     start = time.time()
-    runGoPing()
+    runGoPing(py2goargs=py2goargs)
     end = time.time()
     mem_usage = psutil.Process(os.getpid()).memory_info().rss / 1024 ** 2
 
@@ -114,7 +117,7 @@ if __name__ == "__main__":
     n = 0
     while True:
         start = time.time()
-        runGoPing(display=False)
+        runGoPing(py2goargs=py2goargs, display=False)
         end = time.time()
         mem_usage = psutil.Process(os.getpid()).memory_info().rss / 1024 ** 2
         print(
