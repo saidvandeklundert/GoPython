@@ -59,12 +59,13 @@ if __name__ == "__main__":
     start = time.time()
     runGoPing()
     end = time.time()
+    print("XXXXXX")
     mem_usage = psutil.Process(os.getpid()).memory_info().rss / 1024 ** 2
 
     print(
         f"memory usage: {round(mem_usage,2)} MB\t Go func took {round(end - start, 10)} seconds"
     )
-    """
+
     n = 0
     while True:
         start = time.time()
@@ -76,4 +77,3 @@ if __name__ == "__main__":
                 f"memory usage is {round(mem_usage,2)} MB\t Go func took {round(end - start, 10)} seconds\t Go func called {n} times"
             )
         n = n + 1
-    """

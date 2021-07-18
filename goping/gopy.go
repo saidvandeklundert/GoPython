@@ -79,7 +79,6 @@ func goPing(py2go_info *C.char) C.struct_PyGo {
 	var result C.struct_PyGo
 	result.py2go = C.CString(s)
 	result.go2py = C.CString(Go2Py_returnArgs)
-
 	return result
 }
 
@@ -119,13 +118,13 @@ func PrintStats(stats ping.Statistics) {
 
 type PingResult struct {
 	Host              string `json:"host"`
-	PacketsSent       int    `json:"packets-sent"`
-	PacketLossPercent int    `json:"packetloss-percent"`
+	PacketsSent       int    `json:"packets"`
+	PacketLossPercent int    `json:"packetloss"`
 	Duplicates        int    `json:"duplicates"`
 }
 
 type PingResults struct {
-	PingResults []PingResult `json:"ping-results"`
+	PingResults []PingResult `json:"results"`
 }
 
 // Method to update the PingResults
